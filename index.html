@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Information</title>
+    <link rel="stylesheet" type="text/css" href="/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Patient Information</h1>
+    </header>
+
+    <main>
+        <h2>Patient Details</h2>
+        <p>Name: John Doe</p>
+        <p>DOB: January 1, 1980</p>
+        <p>Blood Group: O+</p>
+        <p>Allergies: None</p>
+        <p>Emergency Contact: 555-1234</p>
+
+        <!-- Add more patient information as needed -->
+
+        <button id="sosButton" onclick="triggerSOS()">SOS</button>
+    </main>
+
+    <script>
+        function triggerSOS() {
+            // Your Twilio credentials
+            const accountSid = 'YOUR_TWILIO_ACCOUNT_SID';
+            const authToken = 'YOUR_TWILIO_AUTH_TOKEN';
+
+            // Twilio phone number and recipient number
+            const from = 'YOUR_TWILIO_PHONE_NUMBER';
+            const to = 'RECIPIENT_PHONE_NUMBER';
+
+            // Message content
+            const message = 'SOS button clicked! Emergency services notified.';
+
+            // Using fetch API to send SMS using Twilio
+            fetch(`https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Authorization': 'Basic ' + btoa(`${accountSid}:${authToken}`)
+                },
+                body: new URLSearchParams({
+                    'To': to,
+                    'From': from,
+                    'Body': message
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("SOS button clicked! SMS sent to family members.");
+                } else {
+                    alert("Failed to send SMS. Please try again later.");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("An error occurred. Please try again later.");
+            });
+        }
+    </script>
+</body>
+</html>
+</body>
+</html>
